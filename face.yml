@@ -1,0 +1,22 @@
+name: face-app
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - pip
+  - jupyter
+  - flask
+  - opencv
+  - pip:
+      - dlib
+      - face-recognition
+      - face-recognition-models
+      - boto3
+      - flask-socketio
+      - eventlet
+      - jupyterlab
+      - psycopg2
+      - requests
+      - pillow

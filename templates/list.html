@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos queridos alunos</title>
+    <script src="https://cdn.socket.io/4.5.2/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5; color: #1c1e21;
+            padding: 2rem;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff; border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 2rem;
+            width: 100%; max-width: 90vw; /* Ocupa mais espaço na tela */
+            text-align: center;
+        }
+        h1 { font-size: 2rem; color: #e80414; margin-bottom: 1.5rem; }
+
+        /* --- CSS MODIFICADO --- */
+
+        /* 1. O contêiner dos nomes agora é um Flexbox */
+        .name-container {
+            display: flex;         /* Alinha os itens em linha */
+            flex-wrap: wrap;       /* Permite que quebrem para a próxima linha */
+            gap: 12px;             /* Espaçamento entre os nomes */
+            justify-content: center; /* Centraliza os nomes no contêiner */
+            min-height: 50px;      /* Altura mínima para não colapsar quando vazio */
+            padding: 1rem;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        /* 2. O estilo de cada nome individual */
+        .name-tag {
+            background-color: #e80414; /* Cor principal azul */
+            color: white;              /* Texto branco */
+            padding: 8px 16px;         /* Espaçamento interno */
+            border-radius: 20px;       /* Bordas arredondadas (efeito "pílula") */
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .name-tag:hover {
+            transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+        }
+        /* --- FIM DAS MODIFICAÇÕES NO CSS --- */
+
+        #status { margin-top: 1rem; font-style: italic; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formandos</h1>
+        
+        <!-- ESTRUTURA HTML MODIFICADA -->
+        <div id="name-container" class="name-container">
+            <!-- Renderiza os nomes iniciais (do servidor) como tags -->
+            {% for name in names %}
+                <div class="name-tag">{{ name }}</div>
+            {% endfor %}
+        </div>
+
+        <p id="status">Aguardando novas detecções...</p>
+    </div>
+
+    <script>
+        // Conecta ao servidor Socket.IO
+        const socket = io();
+
+        // Pega a referência do contêiner e do status
+        const nameContainer = document.getElementById('name-container');
+        const statusElement = document.getElementById('status');
+
+        // Esta função será chamada sempre que o servidor emitir o evento 'update_list'
+        socket.on('update_list', function(data) {
+            console.log('Lista recebida do servidor:', data.names);
+
+            // Limpa o contêiner atual
+            nameContainer.innerHTML = '';
+
+            // Recria as tags com os novos nomes recebidos
+                if (data.names.length === 0) {
+                    statusElement.textContent = "Ainda nenhuma pessoa reconhecida.";
+                } else {
+                    statusElement.textContent = `Total: ${data.names.length} pessoa(s) reconhecida(s).`; 
+                    data.names.forEach(name => {
+                        const nameTag = document.createElement('div');
+                        nameTag.className = 'name-tag';
+                        nameTag.textContent = name;
+                        nameContainer.appendChild(nameTag);
+                    });
+                }
+        });
+
+        socket.on('connect', function() {
+            console.log('Conectado ao servidor via Socket.IO!');
+        });
+    </script>
+</body>
+</html>
