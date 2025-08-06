@@ -12,12 +12,12 @@ from botocore.exceptions import ClientError # ### NOVO ### Para tratar erros do 
 
 # --- CONFIGURAÇÕES ---
 # ⚠️ Lembre-se de substituir com suas credenciais válidas e temporárias do AWS Learner Lab!
-AWS_ACCESS_KEY_ID = 'ASIA6ODU7GZ6EUS7IZEE'
-AWS_SECRET_ACCESS_KEY = 'WeJAaV6J5yJT9vBMkD6K4H9DN8Oz4tCEUW1W5krM'
-AWS_SESSION_TOKEN = 'IQoJb3JpZ2luX2VjEMT//////////wEaCXVzLXdlc3QtMiJHMEUCIQCDfG7ceKMWfSZ9cAZrMfv1wrKADM6wVHhiWXYJQB2pxwIgUNrD0wGtaCz8ak1w085p0jKwopsaGZtkQlXtVNAc0MQquAII7f//////////ARAAGgw5OTIzODI3NjA1NzIiDFHPyeENJmdK9nja8iqMAioM5iaQhNRUTd05fJrcf04DTvTkqJ0Q7x/MdA1OtoGMi8oJOYTZcDsdpXOu78JhTkMz9HavpMdUboYO/QE/Zqw/0QaHouk8DATgXxKJ/bTzpe00LQfpmd4nOaXDEUWRZ7Lst64OgQr9PJF8itD0gYeBte3OUFAbv8EWtDXvw3gYwFwrc5o5GJfUsIQ1HV12A3d8cyZTMu4EjZTGUSl6MHXpWAxBZsBbhjUX0Obd5e+rm4+W0U/SYCk/ghjwb5fFbVZWnkqgX/LcTo8cdthvF6CA/pG3otspwylDh0Y0Max2OBOUXzkPU0zCmvhP0/HQfSO1D+cTA2Yc/5fm9gdaQKjj79MQraiU91holnswndWyxAY6nQFAtuOH0XwRV5wju/xjVc9ccFXkVdfHJDJiX2OUrUfWi4S//tr5E/0VblLjfRU4ZvzV4SimIJHNEMTWKRVVpe8ZNWtWr/CtL9UUJWYh6yQ9jXwNywxJminnJHAzdgnR3aXGiwzUFIaMNa1uVP2LKq6MZRkL8Z2ClP+mgD4GcBqkCaOC6oJGJW/+kWuJ5StwR3/c3qpfdGbpwP2B8IGz'
+AWS_ACCESS_KEY_ID = 'ASIA6ODU7GZ6I3C5MZHW'
+AWS_SECRET_ACCESS_KEY = 'tsDjxUzr8iGzXZM67Y59Iku+62Hiv0JBQRcDVBA9'
+AWS_SESSION_TOKEN = 'IQoJb3JpZ2luX2VjED8aCXVzLXdlc3QtMiJHMEUCIQCFdoLoVyVc1+CMTQqh7ujnix/k71jJGbazQGyhWLAJ6QIgV7BU8YkTih2Qf6H/ejJM/y1KVix4isCDKjqieeVCFgIqrwIIeBAAGgw5OTIzODI3NjA1NzIiDBvXvAzs+j/WKsGzFiqMApgfvlK7P0AqXrLadRo3+5fY0fT8csSt4hc/CbQ34vfKDobbCqHYubrpWBMUWw4GXtIsaIe9Thwj7tyIco9sDSEDLN+1EqobH7w5ky29ZgNV/TSJB5Sfs0pglGisCwIp1cUPXBNghSOgm6dE2E55LxB+RxqNX2Upe56aUGOjIIPXQ+3S2Xb6pQOsehg0FpNb+f9CW2oQAfCwS2g//T/arfTY70p+AWYRtrb8CEXTjGFM1x9hZTQ+GAXFdcjI+A5w2VqOW1eo/5sm3IHMGyT6NGdoLrYmS2M9/Vp048YfzP3wIKjczaG77RZH18sy1dLWmHAFnBRR0aQt9qjgF0jAxbj4QulpX4n+S0TCZS0wrczNxAY6nQExjf9l5U5K09Q5YQ+vHEvBrw34x/aI+VSeaZT2C6GfABgfWMEMCXUYQTKeYK1QO1bTFkwYPeTOsHdgsXk4jn7Q8+ZazhKPr0Urfp6d+dh6AmMa4a8LdqhM17XrpT6HjhgoEhwhvWzlnlv38kL7yKKP7YQdQq7NIl5PkmgiTSv0C2TBXLGDQMMHrj33SR10zydIGR630QF/rzEAAyil'
 AWS_REGION = 'us-east-1'
 S3_BUCKET_NAME = 'visaocomputacional-senai'
-MIN_FACE_AREA_THRESHOLD = 20000 
+MIN_FACE_AREA_THRESHOLD = 30000 
 
 # --- VARIÁVEIS GLOBAIS E CLIENTE S3 ---
 known_face_encodings = []
@@ -121,7 +121,7 @@ def process_frame(image_data_url):
     name = "Desconhecido"
     
     # 6. Compara a assinatura do maior rosto com as conhecidas
-    matches = face_recognition.compare_faces(known_face_encodings, face_encoding_to_check, tolerance=0.5)
+    matches = face_recognition.compare_faces(known_face_encodings, face_encoding_to_check, tolerance=0.4)
     
     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding_to_check)
     if len(face_distances) > 0:
